@@ -67,7 +67,7 @@ export function Sidebar() {
 
             <div className="flex flex-col">
               <Image
-                src="/TejPay-Logo_Original_Final.pdf.jpg"
+                src="/TejPay-Logo_Original_Final.pdf.png"
                 alt="RetailPro Logo"
                 width={160}
                 height={40}
