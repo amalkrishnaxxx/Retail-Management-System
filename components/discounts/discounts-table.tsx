@@ -4,8 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { MoreHorizontal, Eye, Edit, Copy, Trash2, Calendar } from "lucide-react"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { MoreHorizontal, Eye, Edit, Copy, Trash2, Calendar, Tag, TrendingUp } from "lucide-react"
 import { Progress } from "@/components/ui/progress"
 
 const discounts = [
@@ -90,125 +89,243 @@ const discounts = [
 ]
 
 const statusColors = {
-  active: "bg-green-500/20 text-green-400 border-green-500/30",
-  scheduled: "bg-blue-500/20 text-blue-400 border-blue-500/30",
-  expired: "bg-gray-500/20 text-gray-400 border-gray-500/30",
-  draft: "bg-yellow-500/20 text-yellow-400 border-yellow-500/30",
+  active: "bg-emerald-500/10 text-emerald-600 border-emerald-500/20 hover:bg-emerald-500/20",
+  scheduled: "bg-[#17A2B8]/10 text-[#17A2B8] border-[#17A2B8]/20 hover:bg-[#17A2B8]/20",
+  expired: "bg-gray-500/10 text-gray-600 border-gray-500/20 hover:bg-gray-500/20",
+  draft: "bg-amber-500/10 text-amber-600 border-amber-500/20 hover:bg-amber-500/20",
 }
 
 export function DiscountsTable() {
+  const totalRevenue = discounts.reduce((sum, d) => sum + parseFloat(d.revenue.replace(/[$,]/g, '')), 0)
+
   return (
-    <Card className="glass animate-fade-in border-border/30">
-      <CardHeader>
-        <CardTitle className="text-foreground">Discount Campaigns</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="rounded-lg border border-border/30 overflow-hidden">
-          <Table>
-            <TableHeader>
-              <TableRow className="border-border/30 hover:bg-muted/50">
-                <TableHead className="text-muted-foreground">Campaign</TableHead>
-                <TableHead className="text-muted-foreground">Code</TableHead>
-                <TableHead className="text-muted-foreground">Type & Value</TableHead>
-                <TableHead className="text-muted-foreground">Status</TableHead>
-                <TableHead className="text-muted-foreground">Usage</TableHead>
-                <TableHead className="text-muted-foreground">Period</TableHead>
-                <TableHead className="text-muted-foreground">Revenue</TableHead>
-                <TableHead className="text-muted-foreground w-12"></TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {discounts.map((discount, index) => {
-                const usagePercentage = (discount.used / discount.limit) * 100
-                return (
-                  <TableRow
-                    key={discount.id}
-                    className="border-border/30 hover:bg-muted/30 animate-slide-in"
-                    style={{ animationDelay: `${index * 0.05}s` }}
-                  >
-                    <TableCell>
-                      <div>
-                        <p className="font-medium text-foreground">{discount.name}</p>
-                        <p className="text-sm text-muted-foreground">Campaign #{discount.id}</p>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex items-center space-x-2">
-                        <code className="px-2 py-1 bg-muted/50 rounded text-sm font-mono text-foreground">
-                          {discount.code}
-                        </code>
-                        <Button variant="ghost" size="sm" className="h-6 w-6 p-0">
-                          <Copy className="h-3 w-3" />
-                        </Button>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <div>
-                        <p className="text-sm text-foreground">{discount.type}</p>
-                        <p className="font-medium text-primary">{discount.value}</p>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <Badge className={statusColors[discount.status as keyof typeof statusColors]}>
-                        {discount.status}
-                      </Badge>
-                    </TableCell>
-                    <TableCell>
-                      <div className="space-y-2">
-                        <div className="flex items-center justify-between text-sm">
-                          <span className="text-foreground">{discount.used}</span>
-                          <span className="text-muted-foreground">/ {discount.limit}</span>
+    <div className="w-full">
+      <style jsx>{`
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+            transform: translateY(10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        
+        @keyframes slideIn {
+          from {
+            opacity: 0;
+            transform: translateX(-10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+        
+        .animate-fade-in {
+          animation: fadeIn 0.5s ease-out;
+        }
+        
+        .animate-slide-in {
+          animation: slideIn 0.4s ease-out backwards;
+        }
+        
+        .table-row-hover {
+          transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .table-row-hover:hover {
+          background: linear-gradient(90deg, transparent, rgba(23, 162, 184, 0.03), transparent);
+          transform: translateX(2px);
+        }
+        
+        .status-badge {
+          transition: all 0.2s ease;
+          font-weight: 500;
+          letter-spacing: 0.02em;
+        }
+        
+        .status-badge:hover {
+          transform: scale(1.05);
+        }
+        
+        .action-button {
+          transition: all 0.2s ease;
+        }
+        
+        .action-button:hover {
+          background-color: rgba(23, 162, 184, 0.1);
+          transform: scale(1.1);
+        }
+        
+        .code-badge {
+          transition: all 0.2s ease;
+        }
+        
+        .code-badge:hover {
+          background-color: rgba(23, 162, 184, 0.1);
+        }
+        
+        table {
+          width: 100%;
+          border-collapse: separate;
+          border-spacing: 0;
+        }
+        
+        th {
+          text-align: left;
+          font-weight: 600;
+        }
+        
+        td, th {
+          padding: 1rem;
+        }
+      `}</style>
+
+      <Card className="border-none shadow-lg bg-white rounded-2xl overflow-hidden animate-fade-in">
+        <CardHeader className="bg-gradient-to-r from-[#17A2B8]/5 to-[#2C5F7C]/5 border-b border-gray-100 pb-6">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="p-2.5 bg-gradient-to-br from-[#17A2B8] to-[#2C5F7C] rounded-xl shadow-md">
+                <Tag className="h-5 w-5 text-white" />
+              </div>
+              <div>
+                <CardTitle className="text-gray-900 text-xl font-semibold">Discount Campaigns</CardTitle>
+                <p className="text-sm text-gray-500 mt-0.5">Manage promotional codes and offers</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3">
+              <div className="text-right">
+                <p className="text-xs text-gray-500 uppercase tracking-wide">Total Revenue</p>
+                <p className="text-lg font-bold text-gray-900">${totalRevenue.toLocaleString()}</p>
+              </div>
+              <TrendingUp className="h-5 w-5 text-[#17A2B8]" />
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="p-0">
+          <div className="overflow-x-auto">
+            <table>
+              <thead>
+                <tr className="border-b border-gray-100 bg-gray-50/50">
+                  <th className="text-gray-700 font-semibold text-xs uppercase tracking-wider py-4 pl-6">Campaign</th>
+                  <th className="text-gray-700 font-semibold text-xs uppercase tracking-wider py-4">Code</th>
+                  <th className="text-gray-700 font-semibold text-xs uppercase tracking-wider py-4">Type & Value</th>
+                  <th className="text-gray-700 font-semibold text-xs uppercase tracking-wider py-4">Status</th>
+                  <th className="text-gray-700 font-semibold text-xs uppercase tracking-wider py-4">Usage</th>
+                  <th className="text-gray-700 font-semibold text-xs uppercase tracking-wider py-4">Period</th>
+                  <th className="text-gray-700 font-semibold text-xs uppercase tracking-wider py-4">Revenue</th>
+                  <th className="w-12 py-4 pr-6"></th>
+                </tr>
+              </thead>
+              <tbody>
+                {discounts.map((discount, index) => {
+                  const usagePercentage = (discount.used / discount.limit) * 100
+                  return (
+                    <tr
+                      key={discount.id}
+                      className="border-b border-gray-100 table-row-hover animate-slide-in"
+                      style={{ animationDelay: `${index * 0.05}s` }}
+                    >
+                      <td className="py-4 pl-6">
+                        <div>
+                          <p className="font-semibold text-gray-900 text-sm">{discount.name}</p>
+                          <p className="text-xs text-gray-500">Campaign #{discount.id}</p>
                         </div>
-                        <Progress value={usagePercentage} className="h-2" />
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <div className="space-y-1">
-                        <div className="flex items-center text-xs text-muted-foreground">
-                          <Calendar className="h-3 w-3 mr-1" />
-                          {discount.startDate}
-                        </div>
-                        <div className="flex items-center text-xs text-muted-foreground">
-                          <Calendar className="h-3 w-3 mr-1" />
-                          {discount.endDate}
-                        </div>
-                      </div>
-                    </TableCell>
-                    <TableCell className="font-medium text-primary">{discount.revenue}</TableCell>
-                    <TableCell>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" className="h-8 w-8 p-0">
-                            <MoreHorizontal className="h-4 w-4" />
+                      </td>
+                      <td className="py-4">
+                        <div className="flex items-center gap-2">
+                          <code className="code-badge px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-lg text-xs font-mono text-gray-900 font-medium">
+                            {discount.code}
+                          </code>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="h-7 w-7 p-0 action-button rounded-lg hover:bg-[#17A2B8]/10"
+                          >
+                            <Copy className="h-3.5 w-3.5 text-gray-600" />
                           </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="glass-strong">
-                          <DropdownMenuItem>
-                            <Eye className="mr-2 h-4 w-4" />
-                            View Details
-                          </DropdownMenuItem>
-                          <DropdownMenuItem>
-                            <Edit className="mr-2 h-4 w-4" />
-                            Edit Campaign
-                          </DropdownMenuItem>
-                          <DropdownMenuItem>
-                            <Copy className="mr-2 h-4 w-4" />
-                            Duplicate
-                          </DropdownMenuItem>
-                          <DropdownMenuItem className="text-destructive">
-                            <Trash2 className="mr-2 h-4 w-4" />
-                            Delete Campaign
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </TableCell>
-                  </TableRow>
-                )
-              })}
-            </TableBody>
-          </Table>
-        </div>
-      </CardContent>
-    </Card>
+                        </div>
+                      </td>
+                      <td className="py-4">
+                        <div>
+                          <p className="text-xs text-gray-500 font-medium">{discount.type}</p>
+                          <p className="font-bold text-sm text-gray-900 mt-0.5">{discount.value}</p>
+                        </div>
+                      </td>
+                      <td className="py-4">
+                        <Badge className={`${statusColors[discount.status as keyof typeof statusColors]} status-badge capitalize text-xs px-3 py-1 rounded-full border`}>
+                          {discount.status}
+                        </Badge>
+                      </td>
+                      <td className="py-4">
+                        <div className="space-y-2 min-w-[120px]">
+                          <div className="flex items-center justify-between text-xs">
+                            <span className="font-semibold text-gray-900">{discount.used}</span>
+                            <span className="text-gray-500">/ {discount.limit}</span>
+                          </div>
+                          <Progress
+                            value={usagePercentage}
+                            className="h-2 bg-gray-100"
+                            style={{
+                              ['--progress-background' as any]: 'linear-gradient(90deg, #17A2B8, #2C5F7C)'
+                            }}
+                          />
+                          <p className="text-xs text-gray-500 text-right">{usagePercentage.toFixed(0)}%</p>
+                        </div>
+                      </td>
+                      <td className="py-4">
+                        <div className="space-y-1.5">
+                          <div className="flex items-center text-xs text-gray-600">
+                            <Calendar className="h-3.5 w-3.5 mr-1.5 text-[#17A2B8]" />
+                            <span>{discount.startDate}</span>
+                          </div>
+                          <div className="flex items-center text-xs text-gray-600">
+                            <Calendar className="h-3.5 w-3.5 mr-1.5 text-gray-400" />
+                            <span>{discount.endDate}</span>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="py-4 font-semibold text-gray-900 text-base">{discount.revenue}</td>
+                      <td className="py-4 pr-6">
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button
+                              variant="ghost"
+                              className="h-9 w-9 p-0 action-button rounded-lg hover:bg-[#17A2B8]/10"
+                            >
+                              <MoreHorizontal className="h-4 w-4 text-gray-600" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end" className="w-48 bg-white shadow-xl border-gray-200 rounded-xl p-1">
+                            <DropdownMenuItem className="rounded-lg cursor-pointer hover:bg-gray-50 focus:bg-gray-50 py-2.5">
+                              <Eye className="mr-3 h-4 w-4 text-[#17A2B8]" />
+                              <span className="text-gray-700 text-sm font-medium">View Details</span>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem className="rounded-lg cursor-pointer hover:bg-gray-50 focus:bg-gray-50 py-2.5">
+                              <Edit className="mr-3 h-4 w-4 text-[#2C5F7C]" />
+                              <span className="text-gray-700 text-sm font-medium">Edit Campaign</span>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem className="rounded-lg cursor-pointer hover:bg-gray-50 focus:bg-gray-50 py-2.5">
+                              <Copy className="mr-3 h-4 w-4 text-gray-600" />
+                              <span className="text-gray-700 text-sm font-medium">Duplicate</span>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem className="rounded-lg cursor-pointer hover:bg-red-50 focus:bg-red-50 py-2.5">
+                              <Trash2 className="mr-3 h-4 w-4 text-red-600" />
+                              <span className="text-red-600 text-sm font-medium">Delete Campaign</span>
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </td>
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
   )
 }

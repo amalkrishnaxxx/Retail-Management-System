@@ -5,7 +5,20 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
-import { LayoutDashboard, ShoppingCart, Package, BarChart3, Users, Percent, Menu, X, Store } from "lucide-react"
+import {
+  LayoutDashboard,
+  ShoppingCart,
+  Package,
+  BarChart3,
+  Users,
+  Percent,
+  Menu,
+  X,
+  Store,
+} from "lucide-react"
+
+import logo from '../public/TejPay-Logo_Original_Final.pdf.jpg'
+import Image from "next/image"
 
 const navigation = [
   { name: "Dashboard", href: "/", icon: LayoutDashboard },
@@ -22,44 +35,63 @@ export function Sidebar() {
 
   return (
     <>
-      {/* Mobile overlay */}
+      {/* Mobile overlay with smooth fade */}
       {!isCollapsed && (
         <div
-          className="fixed inset-0 z-40 bg-background/80 backdrop-blur-sm lg:hidden"
+          className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm lg:hidden transition-opacity duration-300"
           onClick={() => setIsCollapsed(true)}
         />
       )}
 
-      {/* Sidebar */}
+      {/* Sidebar with gradient background */}
       <div
         className={cn(
-          "fixed left-0 top-0 z-50 h-full glass-strong transition-all duration-300 ease-in-out",
-          "flex flex-col border-r border-sidebar-border",
-          isCollapsed ? "w-16" : "w-64",
-          "lg:relative lg:z-auto",
+          "fixed left-0 top-0 z-50 h-full transition-all duration-500 ease-in-out",
+          "flex flex-col border-r border-white/10 shadow-2xl",
+          "bg-gradient-to-b from-[#0D4C6D] to-[#083344]",
+          isCollapsed ? "w-20" : "w-72",
+          "lg:relative lg:z-auto"
         )}
       >
-        {/* Header */}
-        <div className="flex h-16 items-center justify-between px-4 border-b border-sidebar-border">
-          <div className={cn("flex items-center gap-3 transition-opacity duration-200", isCollapsed && "opacity-0")}>
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
-              <Store className="h-5 w-5 text-primary-foreground" />
+        {/* Decorative overlay */}
+        <div className="absolute inset-0 bg-gradient-to-br from-[#00A6A6]/5 via-transparent to-transparent pointer-events-none" />
+
+        {/* Header with enhanced design */}
+        <div className="relative flex h-20 items-center justify-between px-6 border-b border-white/5">
+          <div
+            className={cn(
+              "flex items-center gap-3 transition-all duration-500",
+              isCollapsed ? "opacity-0 scale-95" : "opacity-100 scale-100"
+            )}
+          >
+
+            <div className="flex flex-col">
+              <Image
+                src="/TejPay-Logo_Original_Final.pdf.jpg"
+                alt="RetailPro Logo"
+                width={160}
+                height={40}
+                priority
+              />
             </div>
-            <span className="font-semibold text-sidebar-foreground">RetailPro</span>
           </div>
 
           <Button
             variant="ghost"
             size="sm"
             onClick={() => setIsCollapsed(!isCollapsed)}
-            className="h-8 w-8 p-0 hover:bg-sidebar-accent"
+            className={cn(
+              "h-10 w-10 p-0 rounded-xl transition-all duration-300",
+              "hover:bg-white/10 text-white hover:scale-110",
+              "border border-white/10 hover:border-[#00A6A6]/50"
+            )}
           >
-            {isCollapsed ? <Menu className="h-4 w-4" /> : <X className="h-4 w-4" />}
+            {isCollapsed ? <Menu className="h-5 w-5" /> : <X className="h-5 w-5" />}
           </Button>
         </div>
 
-        {/* Navigation */}
-        <nav className="flex-1 space-y-1 p-4">
+        {/* Navigation with modern styling */}
+        <nav className="flex-1 space-y-2 p-4 overflow-y-auto">
           {navigation.map((item) => {
             const isActive = pathname === item.href
             return (
@@ -67,45 +99,86 @@ export function Sidebar() {
                 key={item.name}
                 href={item.href}
                 className={cn(
-                  "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200",
-                  "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
-                  "group relative overflow-hidden",
-                  isActive ? "bg-sidebar-primary text-sidebar-primary-foreground shadow-lg" : "text-sidebar-foreground",
-                  isCollapsed && "justify-center px-2",
+                  "w-full flex items-center gap-4 rounded-2xl px-4 py-3.5 text-sm font-medium transition-all duration-300 relative overflow-hidden group",
+                  "hover:translate-x-1",
+                  isActive
+                    ? "bg-gradient-to-r from-[#00A6A6] to-[#00A6A6]/90 text-white shadow-lg scale-105"
+                    : "text-[#F5F7FA] hover:bg-white/5 hover:text-white",
+                  isCollapsed && "justify-center px-3"
                 )}
               >
-                <item.icon
+                {/* Animated shine effect */}
+                <div className={cn(
+                  "absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent",
+                  "translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"
+                )} />
+
+                <div className={cn(
+                  "relative z-10 transition-all duration-300",
+                  "group-hover:scale-110",
+                  isActive && "scale-110"
+                )}>
+                  <item.icon className="h-5 w-5" />
+                </div>
+
+                <span
                   className={cn(
-                    "h-5 w-5 transition-transform duration-200",
-                    "group-hover:scale-110",
-                    isActive && "scale-110",
+                    "relative z-10 transition-all duration-300 whitespace-nowrap",
+                    isCollapsed ? "opacity-0 w-0 absolute" : "opacity-100"
                   )}
-                />
-                <span className={cn("transition-opacity duration-200", isCollapsed && "opacity-0 absolute")}>
+                >
                   {item.name}
                 </span>
 
-                {/* Active indicator */}
-                {isActive && (
-                  <div className="absolute right-0 top-1/2 h-6 w-1 -translate-y-1/2 rounded-l-full bg-sidebar-primary-foreground" />
+                {/* Active indicator - modern dot */}
+                {isActive && !isCollapsed && (
+                  <div className="absolute right-3 top-1/2 h-2 w-2 -translate-y-1/2 rounded-full bg-white" />
+                )}
+
+                {/* Collapsed active indicator */}
+                {isActive && isCollapsed && (
+                  <div className="absolute bottom-2 left-1/2 h-1 w-6 -translate-x-1/2 rounded-full bg-white" />
+                )}
+
+                {/* Notification badge on Orders */}
+                {item.name === "Orders" && !isCollapsed && (
+                  <div className="absolute right-3 top-3 flex h-5 w-5 items-center justify-center rounded-full bg-[#DC2626] text-[10px] font-bold text-white shadow-lg">
+                    3
+                  </div>
                 )}
               </Link>
             )
           })}
         </nav>
 
-        {/* Footer */}
-        <div className="border-t border-sidebar-border p-4">
+        {/* Enhanced footer with status card */}
+        <div className="relative border-t border-white/5 p-4">
+          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
+
           <div
             className={cn(
-              "flex items-center gap-3 text-xs text-sidebar-foreground/60",
-              isCollapsed && "justify-center",
+              "relative flex items-center gap-3 rounded-xl bg-white/5 px-4 py-3 border border-white/10",
+              "transition-all duration-300",
+              isCollapsed && "justify-center px-3"
             )}
           >
-            <div className="h-2 w-2 rounded-full bg-green-500" />
-            <span className={cn("transition-opacity duration-200", isCollapsed && "opacity-0 absolute")}>
-              System Online
-            </span>
+            <div className="relative flex items-center justify-center">
+              <div className="h-3 w-3 rounded-full bg-[#16A34A] shadow-lg" />
+            </div>
+
+            <div
+              className={cn(
+                "flex flex-col transition-all duration-300",
+                isCollapsed && "opacity-0 w-0 absolute"
+              )}
+            >
+              <span className="text-xs font-semibold text-white">
+                System Online
+              </span>
+              <span className="text-[10px] text-[#F5F7FA]/60">
+                All services operational
+              </span>
+            </div>
           </div>
         </div>
       </div>

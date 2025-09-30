@@ -11,7 +11,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { useState } from "react"
+import { useState } from "react" 
 
 export function ProductsHeader() {
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid")

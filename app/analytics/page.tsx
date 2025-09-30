@@ -6,7 +6,7 @@ import { AnalyticsCharts } from "@/components/analytics/analytics-charts"
 
 export default function AnalyticsPage() {
   return (
-    <div className="flex h-screen bg-background">
+    <div className="flex h-screen bg-gradient-to-b from-[#0D4C6D] to-[#083344]">
       <Sidebar />
       <div className="flex-1 flex flex-col overflow-hidden">
         <Header />

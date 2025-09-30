@@ -6,8 +6,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { MoreHorizontal, Eye, Edit, Trash2 } from "lucide-react"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { MoreHorizontal, Eye, Edit, Trash2, Package, TrendingUp } from "lucide-react"
 
 const orders = [
   {
@@ -91,102 +90,215 @@ const orders = [
 ]
 
 const statusColors = {
-  pending: "bg-yellow-500/20 text-yellow-400 border-yellow-500/30",
-  processing: "bg-blue-500/20 text-blue-400 border-blue-500/30",
-  shipped: "bg-purple-500/20 text-purple-400 border-purple-500/30",
-  delivered: "bg-green-500/20 text-green-400 border-green-500/30",
-  cancelled: "bg-red-500/20 text-red-400 border-red-500/30",
+  pending: "bg-amber-500/10 text-amber-600 border-amber-500/20 hover:bg-amber-500/20",
+  processing: "bg-[#17A2B8]/10 text-[#17A2B8] border-[#17A2B8]/20 hover:bg-[#17A2B8]/20",
+  shipped: "bg-[#2C5F7C]/10 text-[#2C5F7C] border-[#2C5F7C]/20 hover:bg-[#2C5F7C]/20",
+  delivered: "bg-emerald-500/10 text-emerald-600 border-emerald-500/20 hover:bg-emerald-500/20",
+  cancelled: "bg-red-500/10 text-red-600 border-red-500/20 hover:bg-red-500/20",
 }
 
 export function OrdersTable() {
   const [selectedOrders, setSelectedOrders] = useState<string[]>([])
+  const [hoveredRow, setHoveredRow] = useState<string | null>(null)
 
   return (
-    <Card className="glass animate-fade-in border-border/30">
-      <CardHeader>
-        <CardTitle className="text-foreground">Recent Orders</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="rounded-lg border border-border/30 overflow-hidden">
-          <Table>
-            <TableHeader>
-              <TableRow className="border-border/30 hover:bg-muted/50">
-                <TableHead className="text-muted-foreground">Order ID</TableHead>
-                <TableHead className="text-muted-foreground">Customer</TableHead>
-                <TableHead className="text-muted-foreground">Products</TableHead>
-                <TableHead className="text-muted-foreground">Amount</TableHead>
-                <TableHead className="text-muted-foreground">Status</TableHead>
-                <TableHead className="text-muted-foreground">Date</TableHead>
-                <TableHead className="text-muted-foreground w-12"></TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {orders.map((order, index) => (
-                <TableRow
-                  key={order.id}
-                  className="border-border/30 hover:bg-muted/30 animate-slide-in"
-                  style={{ animationDelay: `${index * 0.05}s` }}
-                >
-                  <TableCell className="font-medium text-foreground">{order.id}</TableCell>
-                  <TableCell>
-                    <div className="flex items-center space-x-3">
-                      <Avatar className="h-8 w-8">
-                        <AvatarImage src={order.customer.avatar || "/placeholder.svg"} alt={order.customer.name} />
-                        <AvatarFallback>
-                          {order.customer.name
-                            .split(" ")
-                            .map((n) => n[0])
-                            .join("")}
-                        </AvatarFallback>
-                      </Avatar>
-                      <div>
-                        <p className="font-medium text-foreground">{order.customer.name}</p>
-                        <p className="text-sm text-muted-foreground">{order.customer.email}</p>
+    <div className="w-full">
+      <style jsx>{`
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+            transform: translateY(10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        
+        @keyframes slideIn {
+          from {
+            opacity: 0;
+            transform: translateX(-10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+        
+        .animate-fade-in {
+          animation: fadeIn 0.5s ease-out;
+        }
+        
+        .animate-slide-in {
+          animation: slideIn 0.4s ease-out backwards;
+        }
+        
+        .table-row-hover {
+          transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .table-row-hover:hover {
+          background: linear-gradient(90deg, transparent, rgba(23, 162, 184, 0.03), transparent);
+          transform: translateX(2px);
+        }
+        
+        .status-badge {
+          transition: all 0.2s ease;
+          font-weight: 500;
+          letter-spacing: 0.02em;
+        }
+        
+        .status-badge:hover {
+          transform: scale(1.05);
+        }
+        
+        .action-button {
+          transition: all 0.2s ease;
+        }
+        
+        .action-button:hover {
+          background-color: rgba(23, 162, 184, 0.1);
+          transform: scale(1.1);
+        }
+        
+        .avatar-wrapper {
+          transition: transform 0.2s ease;
+        }
+        
+        .avatar-wrapper:hover {
+          transform: scale(1.1);
+        }
+        
+        table {
+          width: 100%;
+          border-collapse: separate;
+          border-spacing: 0;
+        }
+        
+        th {
+          text-align: left;
+          font-weight: 600;
+        }
+        
+        td, th {
+          padding: 1rem;
+        }
+      `}</style>
+
+      <Card className="border-none shadow-lg bg-white rounded-2xl overflow-hidden animate-fade-in">
+        <CardHeader className="bg-gradient-to-r from-[#17A2B8]/5 to-[#2C5F7C]/5 border-b border-gray-100 pb-6">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="p-2.5 bg-gradient-to-br from-[#17A2B8] to-[#2C5F7C] rounded-xl shadow-md">
+                <Package className="h-5 w-5 text-white" />
+              </div>
+              <div>
+                <CardTitle className="text-gray-900 text-xl font-semibold">Recent Orders</CardTitle>
+                <p className="text-sm text-gray-500 mt-0.5">Track and manage your latest transactions</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2 text-sm">
+              <TrendingUp className="h-4 w-4 text-[#17A2B8]" />
+              <span className="text-gray-600 font-medium">{orders.length} orders</span>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="p-0">
+          <div className="overflow-x-auto">
+            <table>
+              <thead>
+                <tr className="border-b border-gray-100 bg-gray-50/50">
+                  <th className="text-gray-700 font-semibold text-xs uppercase tracking-wider py-4 pl-6">Order ID</th>
+                  <th className="text-gray-700 font-semibold text-xs uppercase tracking-wider py-4">Customer</th>
+                  <th className="text-gray-700 font-semibold text-xs uppercase tracking-wider py-4">Products</th>
+                  <th className="text-gray-700 font-semibold text-xs uppercase tracking-wider py-4">Amount</th>
+                  <th className="text-gray-700 font-semibold text-xs uppercase tracking-wider py-4">Status</th>
+                  <th className="text-gray-700 font-semibold text-xs uppercase tracking-wider py-4">Date</th>
+                  <th className="w-12 py-4 pr-6"></th>
+                </tr>
+              </thead>
+              <tbody>
+                {orders.map((order, index) => (
+                  <tr
+                    key={order.id}
+                    className="border-b border-gray-100 table-row-hover animate-slide-in"
+                    style={{ animationDelay: `${index * 0.05}s` }}
+                    onMouseEnter={() => setHoveredRow(order.id)}
+                    onMouseLeave={() => setHoveredRow(null)}
+                  >
+                    <td className="font-semibold text-gray-900 py-4 pl-6">
+                      <span className="inline-flex items-center">
+                        {order.id}
+                      </span>
+                    </td>
+                    <td className="py-4">
+                      <div className="flex items-center gap-3">
+                        <div className="avatar-wrapper">
+                          <Avatar className="h-10 w-10 border-2 border-[#17A2B8]/20 shadow-sm">
+                            <AvatarImage src={order.customer.avatar || "/placeholder.svg"} alt={order.customer.name} />
+                            <AvatarFallback className="bg-gradient-to-br from-[#17A2B8] to-[#2C5F7C] text-white text-sm font-medium">
+                              {order.customer.name
+                                .split(" ")
+                                .map((n) => n[0])
+                                .join("")}
+                            </AvatarFallback>
+                          </Avatar>
+                        </div>
+                        <div>
+                          <p className="font-medium text-gray-900 text-sm">{order.customer.name}</p>
+                          <p className="text-xs text-gray-500">{order.customer.email}</p>
+                        </div>
                       </div>
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <div className="space-y-1">
-                      <p className="text-sm text-foreground">{order.products[0]}</p>
-                      {order.items > 1 && (
-                        <p className="text-xs text-muted-foreground">+{order.items - 1} more items</p>
-                      )}
-                    </div>
-                  </TableCell>
-                  <TableCell className="font-medium text-primary">{order.amount}</TableCell>
-                  <TableCell>
-                    <Badge className={statusColors[order.status as keyof typeof statusColors]}>{order.status}</Badge>
-                  </TableCell>
-                  <TableCell className="text-muted-foreground">{order.date}</TableCell>
-                  <TableCell>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="h-8 w-8 p-0">
-                          <MoreHorizontal className="h-4 w-4" />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end" className="glass-strong">
-                        <DropdownMenuItem>
-                          <Eye className="mr-2 h-4 w-4" />
-                          View Details
-                        </DropdownMenuItem>
-                        <DropdownMenuItem>
-                          <Edit className="mr-2 h-4 w-4" />
-                          Edit Order
-                        </DropdownMenuItem>
-                        <DropdownMenuItem className="text-destructive">
-                          <Trash2 className="mr-2 h-4 w-4" />
-                          Cancel Order
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
-      </CardContent>
-    </Card>
+                    </td>
+                    <td className="py-4">
+                      <div>
+                        <p className="text-sm text-gray-900 font-medium">{order.products[0]}</p>
+                        {order.items > 1 && (
+                          <p className="text-xs text-[#17A2B8] font-medium mt-0.5">+{order.items - 1} more items</p>
+                        )}
+                      </div>
+                    </td>
+                    <td className="font-semibold text-gray-900 py-4 text-base">{order.amount}</td>
+                    <td className="py-4">
+                      <Badge className={`${statusColors[order.status as keyof typeof statusColors]} status-badge capitalize text-xs px-3 py-1 rounded-full border`}>
+                        {order.status}
+                      </Badge>
+                    </td>
+                    <td className="text-gray-600 py-4 text-sm">{order.date}</td>
+                    <td className="py-4 pr-6">
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button
+                            variant="ghost"
+                            className="h-9 w-9 p-0 action-button rounded-lg hover:bg-[#17A2B8]/10"
+                          >
+                            <MoreHorizontal className="h-4 w-4 text-gray-600" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end" className="w-48 bg-white shadow-xl border-gray-200 rounded-xl p-1">
+                          <DropdownMenuItem className="rounded-lg cursor-pointer hover:bg-gray-50 focus:bg-gray-50 py-2.5">
+                            <Eye className="mr-3 h-4 w-4 text-[#17A2B8]" />
+                            <span className="text-gray-700 text-sm font-medium">View Details</span>
+                          </DropdownMenuItem>
+                          <DropdownMenuItem className="rounded-lg cursor-pointer hover:bg-gray-50 focus:bg-gray-50 py-2.5">
+                            <Edit className="mr-3 h-4 w-4 text-[#2C5F7C]" />
+                            <span className="text-gray-700 text-sm font-medium">Edit Order</span>
+                          </DropdownMenuItem>
+                          <DropdownMenuItem className="rounded-lg cursor-pointer hover:bg-red-50 focus:bg-red-50 py-2.5">
+                            <Trash2 className="mr-3 h-4 w-4 text-red-600" />
+                            <span className="text-red-600 text-sm font-medium">Cancel Order</span>
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
   )
 }
