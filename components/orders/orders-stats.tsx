@@ -1,8 +1,9 @@
 "use client"
 
 import type React from "react"
-import { ShoppingCart, Clock, Truck, CheckCircle2 } from "lucide-react"
+import { ShoppingCart, Clock, Truck, CheckCircle } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { FaRupeeSign } from "react-icons/fa";
 import { cn } from "@/lib/utils"
 
 interface StatCardProps {
@@ -71,23 +72,17 @@ export function OrdersStats() {
       iconBg: "bg-gradient-to-br from-teal-500 to-teal-600 shadow-lg shadow-teal-500/40",
     },
     {
-      title: "Pending",
-      value: "156",
-      icon: <Clock className="h-5 w-5" />,
-      iconBg: "bg-gradient-to-br from-amber-500 to-amber-600 shadow-lg shadow-amber-500/40",
+      title: "Total Completed",
+      value: "2,105", // Update this value as needed
+      icon: <CheckCircle className="h-5 w-5" />, // Using a "completed" style icon
+      iconBg: "bg-gradient-to-br from-green-600 to-green-700 shadow-lg shadow-green-600/40",
     },
     {
-      title: "In Transit",
-      value: "89",
-      icon: <Truck className="h-5 w-5" />,
-      iconBg: "bg-gradient-to-br from-sky-600 to-sky-700 shadow-lg shadow-sky-600/40",
-    },
-    {
-      title: "Completed",
-      value: "2,105",
-      icon: <CheckCircle2 className="h-5 w-5" />,
-      iconBg: "bg-gradient-to-br from-emerald-500 to-emerald-600 shadow-lg shadow-emerald-500/40",
-    },
+      title: "Total Amount",
+      value: "₹89,000",
+      icon: <FaRupeeSign className="h-5 w-5" />,
+      iconBg: "bg-gradient-to-br from-yellow-600 to-yellow-700 shadow-lg shadow-yellow-600/40",
+    }
   ]
 
   return (

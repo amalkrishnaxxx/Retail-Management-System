@@ -7,6 +7,11 @@ import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { MoreHorizontal, Eye, Edit, Trash2, Package, TrendingUp } from "lucide-react"
+import { useRouter } from "next/navigation"
+
+interface OrdersTableProps {
+  onViewDetails: () => void
+}
 
 const orders = [
   {
@@ -97,9 +102,15 @@ const statusColors = {
   cancelled: "bg-red-500/10 text-red-600 border-red-500/20 hover:bg-red-500/20",
 }
 
-export function OrdersTable() {
+export function OrdersTable({ onViewDetails }: OrdersTableProps) {
   const [selectedOrders, setSelectedOrders] = useState<string[]>([])
   const [hoveredRow, setHoveredRow] = useState<string | null>(null)
+  const router = useRouter();
+
+  const handleViewDetails = () => {
+    router.push("/orders/orderDetails");
+  };
+
 
   return (
     <div className="w-full">
@@ -204,8 +215,8 @@ export function OrdersTable() {
             </div>
           </div>
         </CardHeader>
-        <CardContent className="p-0">
-          <div className="overflow-x-auto">
+        <CardContent className="p-0" style={{ overflow: 'none' }}>
+          <div className="overflow-x-hidden">
             <table>
               <thead>
                 <tr className="border-b border-gray-100 bg-gray-50/50">
@@ -215,24 +226,23 @@ export function OrdersTable() {
                   <th className="text-gray-700 font-semibold text-xs uppercase tracking-wider py-4">Amount</th>
                   <th className="text-gray-700 font-semibold text-xs uppercase tracking-wider py-4">Status</th>
                   <th className="text-gray-700 font-semibold text-xs uppercase tracking-wider py-4">Date</th>
-                  <th className="w-12 py-4 pr-6"></th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody style={{ overflow: 'none' }}>
                 {orders.map((order, index) => (
                   <tr
                     key={order.id}
                     className="border-b border-gray-100 table-row-hover animate-slide-in"
-                    style={{ animationDelay: `${index * 0.05}s` }}
+                    style={{ animationDelay: `${index * 0.05}s`, overflow: 'hidden' }}
                     onMouseEnter={() => setHoveredRow(order.id)}
                     onMouseLeave={() => setHoveredRow(null)}
                   >
                     <td className="font-semibold text-gray-900 py-4 pl-6">
-                      <span className="inline-flex items-center">
-                        {order.id}
-                      </span>
+                      <Button onClick={onViewDetails}>
+                        View Details
+                      </Button>
                     </td>
-                    <td className="py-4">
+                    <td className="py-4" style={{ overflow: 'none' }}>
                       <div className="flex items-center gap-3">
                         <div className="avatar-wrapper">
                           <Avatar className="h-10 w-10 border-2 border-[#17A2B8]/20 shadow-sm">
@@ -266,7 +276,7 @@ export function OrdersTable() {
                       </Badge>
                     </td>
                     <td className="text-gray-600 py-4 text-sm">{order.date}</td>
-                    <td className="py-4 pr-6">
+                    {/* <td className="py-4 pr-6">
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                           <Button
@@ -291,7 +301,7 @@ export function OrdersTable() {
                           </DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>
-                    </td>
+                    </td> */}
                   </tr>
                 ))}
               </tbody>

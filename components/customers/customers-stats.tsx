@@ -134,14 +134,14 @@ export function CustomersStats() {
       icon: <Users className="h-5 w-5" />,
       iconBg: "bg-gradient-to-br from-emerald-500 to-emerald-600 shadow-lg shadow-emerald-500/40",
     },
-    {
-      title: "VIP Customers",
-      value: "156",
-      change: "+15.3%",
-      trend: "up" as const,
-      icon: <span className="h-5 w-5 text-yellow-400">👑</span>, // Custom icon for crown
-      iconBg: "bg-gradient-to-br from-yellow-600 to-yellow-700 shadow-lg shadow-yellow-500/40",
-    },
+    // {
+    //   title: "VIP Customers",
+    //   value: "156",
+    //   change: "+15.3%",
+    //   trend: "up" as const,
+    //   icon: <span className="h-5 w-5 text-yellow-400">👑</span>, // Custom icon for crown
+    //   iconBg: "bg-gradient-to-br from-yellow-600 to-yellow-700 shadow-lg shadow-yellow-500/40",
+    // },
     {
       title: "Customer Growth",
       value: "+23.1%",

@@ -143,6 +143,14 @@ export function AnalyticsOverview() {
       iconBg: "bg-gradient-to-br from-purple-500 to-purple-600 shadow-lg shadow-purple-500/40",
     },
     {
+      title: "Repeated Customers",
+      value: "98",
+      change: "+5.4%",
+      trend: "up" as const,
+      icon: <Users className="h-5 w-5" />,
+      iconBg: "bg-gradient-to-br from-pink-500 to-pink-600 shadow-lg shadow-pink-500/40",
+    },
+    {
       title: "Products Sold",
       value: "12,847",
       change: "+15.3%",
@@ -150,11 +158,11 @@ export function AnalyticsOverview() {
       icon: <Package className="h-5 w-5" />,
       iconBg: "bg-gradient-to-br from-orange-500 to-orange-600 shadow-lg shadow-orange-500/40",
     },
+
   ]
 
-
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
       {stats.map((stat, index) => (
         <StatCard key={stat.title} {...stat} delay={index * 0.1} />
       ))}

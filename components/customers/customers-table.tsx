@@ -203,7 +203,7 @@ export function CustomersTable() {
           </div>
         </CardHeader>
         <CardContent className="p-0">
-          <div className="overflow-x-auto">
+          <div className="overflow-x-hidden">
             <table>
               <thead>
                 <tr className="border-b border-gray-100 bg-gray-50/50">
@@ -268,7 +268,7 @@ export function CustomersTable() {
                     <td className="py-4 text-gray-900 font-medium">{customer.orders}</td>
                     <td className="py-4 font-semibold text-gray-900 text-base">{customer.totalSpent}</td>
                     <td className="py-4 text-gray-600 text-sm">{customer.lastOrder}</td>
-                    <td className="py-4 pr-6">
+                    {/* <td className="py-4 pr-6">
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                           <Button
@@ -293,7 +293,7 @@ export function CustomersTable() {
                           </DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>
-                    </td>
+                    </td> */}
                   </tr>
                 ))}
               </tbody>

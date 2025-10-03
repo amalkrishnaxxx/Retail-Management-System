@@ -143,7 +143,7 @@ export function StatsCards() {
       iconBg: "bg-gradient-to-br from-sky-600 to-sky-700 shadow-lg shadow-sky-600/40",
     },
     {
-      title: "Active Customers",
+      title: "Repeated Customers",
       value: "573",
       change: "-2.1%",
       trend: "down" as const,

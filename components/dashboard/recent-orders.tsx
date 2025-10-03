@@ -130,8 +130,8 @@ export function RecentOrders() {
                     </Avatar>
                     {/* Status indicator dot */}
                     <div className={`absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full border-2 border-white shadow-sm ${order.status === 'completed' ? 'bg-emerald-500' :
-                        order.status === 'processing' ? 'bg-teal-500' :
-                          order.status === 'shipped' ? 'bg-sky-500' : 'bg-amber-500'
+                      order.status === 'processing' ? 'bg-teal-500' :
+                        order.status === 'shipped' ? 'bg-sky-500' : 'bg-amber-500'
                       }`} />
                   </div>
 

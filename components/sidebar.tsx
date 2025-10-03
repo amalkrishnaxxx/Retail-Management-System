@@ -26,7 +26,7 @@ const navigation = [
   { name: "Products", href: "/products", icon: Package },
   { name: "Analytics", href: "/analytics", icon: BarChart3 },
   { name: "Customers", href: "/customers", icon: Users },
-  { name: "Discounts", href: "/discounts", icon: Percent },
+  { name: "Offers & Discounts", href: "/discounts", icon: Percent },
 ]
 
 export function Sidebar() {

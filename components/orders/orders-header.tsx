@@ -12,7 +12,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
-export function OrdersHeader() { 
+export function OrdersHeader() {
   return (
     <div>
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6">

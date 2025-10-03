@@ -205,7 +205,7 @@ export function DiscountsTable() {
           </div>
         </CardHeader>
         <CardContent className="p-0">
-          <div className="overflow-x-auto">
+          <div className="overflow-x-hidden">
             <table>
               <thead>
                 <tr className="border-b border-gray-100 bg-gray-50/50">
@@ -288,7 +288,7 @@ export function DiscountsTable() {
                         </div>
                       </td>
                       <td className="py-4 font-semibold text-gray-900 text-base">{discount.revenue}</td>
-                      <td className="py-4 pr-6">
+                      {/* <td className="py-4 pr-6">
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
                             <Button
@@ -317,7 +317,7 @@ export function DiscountsTable() {
                             </DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>
-                      </td>
+                      </td> */}
                     </tr>
                   )
                 })}
