@@ -9,7 +9,6 @@ import "./globals.css"
 export const metadata: Metadata = {
   title: "Retail Management System",
   description: "Modern retail management platform with advanced analytics",
-  generator: "v0.app",
 }
 
 export default function RootLayout({

@@ -11,6 +11,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import CustomerDialog from "./customerAddDialouge"
 
 export function CustomersHeader() {
   return (
@@ -56,10 +57,7 @@ export function CustomersHeader() {
         </Button>
 
         {/* Add Customer */}
-        <Button className="bg-primary hover:bg-primary/90">
-          <UserPlus className="h-4 w-4 mr-2" />
-          Add Customer
-        </Button>
+        <CustomerDialog />
       </div>
     </div>
   )

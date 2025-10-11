@@ -1,8 +1,13 @@
 "use client"
 
+import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Textarea } from "@/components/ui/textarea"
 import { Search, Filter, Download, Plus, Grid, List } from "lucide-react"
+import { Switch } from "@/components/ui/switch"
+import ProductDialog from "./products-dialogue"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,18 +16,34 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { useState } from "react" 
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select"
+import ImportProductsDialog from "./ImportProductsDialog"
 
 export function ProductsHeader() {
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
+  const [open, setOpen] = useState(false)
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   return (
     <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+      {/* Left section */}
       <div>
         <h1 className="text-3xl font-bold text-foreground">Products</h1>
-        <p className="text-muted-foreground">Manage your product inventory and catalog</p>
+        <p className="text-muted-foreground">
+          Manage your product inventory and catalog
+        </p>
       </div>
 
+      {/* Right section */}
       <div className="flex items-center gap-3">
         {/* Search */}
         <div className="relative">
@@ -61,7 +82,11 @@ export function ProductsHeader() {
               Filter
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="glass-strong" align="end">
+          <DropdownMenuContent
+            className="bg-background/95 backdrop-blur-sm border z-50"
+            align="end"
+            sideOffset={5}
+          >
             <DropdownMenuLabel>Filter by Category</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem>All Products</DropdownMenuItem>
@@ -71,20 +96,24 @@ export function ProductsHeader() {
             <DropdownMenuItem>Sports</DropdownMenuItem>
             <DropdownMenuItem>Books</DropdownMenuItem>
           </DropdownMenuContent>
+
+
         </DropdownMenu>
 
         {/* Export */}
-        <Button variant="outline" className="glass border-border/30 bg-transparent">
+        <Button
+          variant="outline"
+          className="glass border-border/30 bg-transparent"
+        >
           <Download className="h-4 w-4 mr-2" />
           Export
         </Button>
 
-        {/* Add Product */}
-        <Button className="bg-primary hover:bg-primary/90">
-          <Plus className="h-4 w-4 mr-2" />
-          Add Product
-        </Button>
+        {/* Add Product Dialog */}
+        <ProductDialog />
+        <ImportProductsDialog />
       </div>
-    </div>
+    </div >
   )
 }
+

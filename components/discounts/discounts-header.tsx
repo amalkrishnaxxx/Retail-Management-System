@@ -11,6 +11,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import DiscountDialog from "./discountAddDialogue"
 
 export function DiscountsHeader() {
   return (
@@ -56,10 +57,7 @@ export function DiscountsHeader() {
         </Button>
 
         {/* Create Discount */}
-        <Button className="bg-primary hover:bg-primary/90">
-          <Percent className="h-4 w-4 mr-2" />
-          Create Discount
-        </Button>
+        <DiscountDialog />
       </div>
     </div>
   )

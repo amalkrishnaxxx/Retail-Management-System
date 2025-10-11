@@ -13,7 +13,8 @@ import {
   Users,
   Percent,
   Menu,
-  X,
+  ChevronLeft,
+  ChevronRight,
   Store,
 } from "lucide-react"
 
@@ -35,14 +36,6 @@ export function Sidebar() {
 
   return (
     <>
-      {/* Mobile overlay with smooth fade */}
-      {!isCollapsed && (
-        <div
-          className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm lg:hidden transition-opacity duration-300"
-          onClick={() => setIsCollapsed(true)}
-        />
-      )}
-
       {/* Sidebar with gradient background */}
       <div
         className={cn(
@@ -58,21 +51,23 @@ export function Sidebar() {
 
         {/* Header with enhanced design */}
         <div className="relative flex h-20 items-center justify-between px-6 border-b border-white/5">
-          <div
-            className={cn(
-              "flex items-center gap-3 transition-all duration-500",
-              isCollapsed ? "opacity-0 scale-95" : "opacity-100 scale-100"
-            )}
-          >
-
-            <div className="flex flex-col">
-              <Image
-                src="/TejPay-Logo_Original_Final.pdf.png"
-                alt="RetailPro Logo"
-                width={160}
-                height={40}
-                priority
-              />
+          <div className="flex items-center gap-3 transition-all duration-500">
+            <div
+              className={cn(
+                "transition-all duration-500",
+                isCollapsed ? "opacity-0 scale-95 w-0" : "opacity-100 scale-100"
+              )}
+            >
+              <div className="relative w-[160px] h-[65px] overflow-hidden rounded-md">
+                <Image
+                  src="/Fein_Logo.png"
+                  alt="RetailPro Logo"
+                  width={160}
+                  height={90}
+                  className="object-cover object-top translate-y-[-40px]"
+                  priority
+                />
+              </div>
             </div>
           </div>
 
@@ -81,12 +76,23 @@ export function Sidebar() {
             size="sm"
             onClick={() => setIsCollapsed(!isCollapsed)}
             className={cn(
-              "h-10 w-10 p-0 rounded-xl transition-all duration-300",
+              "h-10 w-10 p-0 rounded-xl transition-all duration-300 ease-in-out",
               "hover:bg-white/10 text-white hover:scale-110",
               "border border-white/10 hover:border-[#00A6A6]/50"
             )}
           >
-            {isCollapsed ? <Menu className="h-5 w-5" /> : <X className="h-5 w-5" />}
+            {isCollapsed ? (
+              <Image
+                src="/Fein_Logo.png"
+                alt="Fein Logo"
+                width={40}
+                height={40}
+                className="object-contain mx-auto transition-transform duration-300 hover:scale-105"
+                priority
+              />
+            ) : (
+              <ChevronLeft className="h-5 w-5 transition-transform duration-300 hover:-translate-x-1" />
+            )}
           </Button>
         </div>
 
@@ -180,6 +186,20 @@ export function Sidebar() {
               </span>
             </div>
           </div>
+          <div className={cn(
+            "flex items-center justify-center mt-4 space-x-2 transition-all duration-300",
+            isCollapsed && "opacity-0"
+          )}>
+            <p className="text-xs text-slate-300">Powered By</p>
+            <Image
+              src="/TejPay-Logo_Original_Final.pdf.png"
+              alt="RetailPro Logo"
+              width={90}
+              height={40}
+              priority
+            />
+          </div>
+
         </div>
       </div>
     </>

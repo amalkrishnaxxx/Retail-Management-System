@@ -1,36 +1,25 @@
 "use client"
 
 import { useState } from "react"
-import { Bell, Search, Settings, User, LogOut, UserCircle } from "lucide-react"
+import { Bell, Settings, UserCircle, CheckCircle, AlertTriangle, Cog, LogOut, CreditCard, ShoppingBag, Users, Database } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { cn } from "@/lib/utils"
+import NotificationsModal from "./notification"
 
 export function Header() {
   const [searchFocused, setSearchFocused] = useState(false)
 
   return (
     <header className="sticky top-0 z-40 border-b border-white/10 bg-gradient-to-r from-[#0D4C6D] to-[#083344] backdrop-blur-xl shadow-xl">
-      {/* Decorative gradient line */}
       <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#00A6A6] to-transparent" />
-
       <div className="flex h-16 items-center justify-between px-6 gap-6">
+
         {/* Search Section */}
         <div className="flex flex-1 items-center gap-4 max-w-2xl">
           <div className="relative flex-1 group">
-            <Search className={cn(
-              "absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 transition-all duration-300",
-              searchFocused ? "text-[#00A6A6] scale-110" : "text-[#F5F7FA]/60"
-            )} />
             <Input
               placeholder="Search products, orders, customers..."
               onFocus={() => setSearchFocused(true)}
@@ -42,58 +31,118 @@ export function Header() {
                 "placeholder:text-[#F5F7FA]/60 text-white"
               )}
             />
-            {/* Search glow effect */}
             <div className={cn(
-              "absolute inset-0 rounded-2xl bg-gradient-to-r from-[#00A6A6]/0 via-[#00A6A6]/10 to-[#00A6A6]/0 opacity-0 transition-opacity duration-300 pointer-events-none",
-              searchFocused && "opacity-100"
-            )} />
+              "absolute left-4 top-1/2 -translate-y-1/2 transition-all duration-300",
+              searchFocused ? "text-[#00A6A6] scale-110" : "text-[#F5F7FA]/60"
+            )}>
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 1110.5 3a7.5 7.5 0 016.15 13.65z" />
+              </svg>
+            </div>
           </div>
         </div>
 
-        {/* Actions Section */}
+        {/* Actions */}
         <div className="flex items-center gap-2">
-          {/* Notifications Button */}
-          <div className="relative">
-            <Button
-              variant="ghost"
-              size="sm"
-              className={cn(
-                "relative h-10 w-10 rounded-xl transition-all duration-300",
-                "hover:bg-white/10 hover:scale-105 text-[#F5F7FA] hover:text-white",
-                "border border-transparent hover:border-white/20"
-              )}
-            >
-              <Bell className="h-5 w-5" />
-            </Button>
 
-            {/* Notification badge with pulse */}
-            <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center">
-              <span className="absolute inline-flex h-full w-full rounded-full bg-[#DC2626] opacity-75 animate-ping" />
-              <span className="relative inline-flex h-5 w-5 rounded-full bg-[#DC2626] items-center justify-center text-[10px] font-bold text-white shadow-lg">
-                3
-              </span>
-            </span>
-          </div>
+          {/* Notifications Dialog */}
 
-          {/* Settings Button */}
-          <Button
-            variant="ghost"
-            size="sm"
-            className={cn(
-              "h-10 w-10 rounded-xl transition-all duration-300",
-              "hover:bg-white/10 hover:scale-105 hover:rotate-90 text-[#F5F7FA] hover:text-white",
-              "border border-transparent hover:border-white/20"
-            )}
-          >
-            <Settings className="h-5 w-5" />
-          </Button>
+          <NotificationsModal />
+
+          {/* Settings Dialog */}
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-10 w-10 rounded-xl text-[#F5F7FA] hover:bg-white/10 hover:scale-105 hover:rotate-90 hover:text-white"
+              >
+                <Settings className="h-5 w-5" />
+              </Button>
+            </DialogTrigger>
+
+            <DialogContent className="w-[900px] max-h-[80vh] max-w-full bg-gradient-to-b from-[#0D4C6D] to-[#083344] rounded-3xl shadow-2xl p-8">
+              <DialogHeader>
+                <DialogTitle className="text-white font-bold text-2xl mb-2">Settings</DialogTitle>
+                <p className="text-white/70 text-sm">
+                  Manage your account, system, notifications, and store preferences from one place.
+                </p>
+              </DialogHeader>
+
+              <div className="grid grid-cols-2 gap-6 mt-6">
+                {/* Account Settings */}
+                <div className="flex flex-col bg-white/5 p-4 rounded-xl hover:bg-white/10 transition">
+                  <div className="flex items-center mb-2">
+                    <UserCircle className="h-6 w-6 text-white mr-2" />
+                    <h3 className="text-white font-semibold">Account Settings</h3>
+                  </div>
+                  <p className="text-white/70 text-sm">Update your profile and personal info.</p>
+                </div>
+
+                {/* System Settings */}
+                <div className="flex flex-col bg-white/5 p-4 rounded-xl hover:bg-white/10 transition">
+                  <div className="flex items-center mb-2">
+                    <Cog className="h-6 w-6 text-white mr-2" />
+                    <h3 className="text-white font-semibold">System Settings</h3>
+                  </div>
+                  <p className="text-white/70 text-sm">Configure system behavior and preferences.</p>
+                </div>
+
+                {/* Notifications */}
+                <div className="flex flex-col bg-white/5 p-4 rounded-xl hover:bg-white/10 transition">
+                  <div className="flex items-center mb-2">
+                    <Bell className="h-6 w-6 text-white mr-2" />
+                    <h3 className="text-white font-semibold">Notifications</h3>
+                  </div>
+                  <p className="text-white/70 text-sm">Manage alerts and notifications.</p>
+                </div>
+
+                {/* Payment Settings */}
+                <div className="flex flex-col bg-white/5 p-4 rounded-xl hover:bg-white/10 transition">
+                  <div className="flex items-center mb-2">
+                    <CreditCard className="h-6 w-6 text-white mr-2" />
+                    <h3 className="text-white font-semibold">Payment Settings</h3>
+                  </div>
+                  <p className="text-white/70 text-sm">Manage payment methods.</p>
+                </div>
+
+                {/* Store Preferences */}
+                <div className="flex flex-col bg-white/5 p-4 rounded-xl hover:bg-white/10 transition">
+                  <div className="flex items-center mb-2">
+                    <ShoppingBag className="h-6 w-6 text-white mr-2" />
+                    <h3 className="text-white font-semibold">Store Preferences</h3>
+                  </div>
+                  <p className="text-white/70 text-sm">Customize store appearance and settings.</p>
+                </div>
+
+                {/* User Roles & Permissions */}
+                <div className="flex flex-col bg-white/5 p-4 rounded-xl hover:bg-white/10 transition">
+                  <div className="flex items-center mb-2">
+                    <Users className="h-6 w-6 text-white mr-2" />
+                    <h3 className="text-white font-semibold">User Roles & Permissions</h3>
+                  </div>
+                  <p className="text-white/70 text-sm">Assign roles and access levels.</p>
+                </div>
+
+                {/* Data Backup & Restore */}
+                <div className="flex flex-col bg-white/5 p-4 rounded-xl hover:bg-white/10 transition">
+                  <div className="flex items-center mb-2">
+                    <Database className="h-6 w-6 text-white mr-2" />
+                    <h3 className="text-white font-semibold">Data Backup & Restore</h3>
+                  </div>
+                  <p className="text-white/70 text-sm">Backup and restore data.</p>
+                </div>
+              </div>
+
+            </DialogContent>
+          </Dialog>
 
           {/* Divider */}
           <div className="h-8 w-px bg-white/20 mx-1" />
 
-          {/* User Menu */}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
+          {/* Profile Dialog */}
+          <Dialog>
+            <DialogTrigger asChild>
               <Button
                 variant="ghost"
                 className={cn(
@@ -108,23 +157,15 @@ export function Header() {
                     JD
                   </AvatarFallback>
                 </Avatar>
-
-                {/* Online status indicator */}
-                <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full bg-[#16A34A] border-2 border-white shadow-sm" />
               </Button>
-            </DropdownMenuTrigger>
+            </DialogTrigger>
 
-            <DropdownMenuContent
-              className={cn(
-                "w-64 mt-2 rounded-2xl border border-white/10",
-                "bg-gradient-to-b from-[#0D4C6D] to-[#083344] backdrop-blur-xl shadow-2xl",
-                "animate-in fade-in-0 zoom-in-95 duration-200"
-              )}
-              align="end"
-              forceMount
-            >
-              {/* User Info Header */}
-              <DropdownMenuLabel className="font-normal p-4">
+            <DialogContent className="w-96 bg-gradient-to-b from-[#0D4C6D] to-[#083344] rounded-2xl shadow-2xl p-6">
+              <DialogHeader>
+                <DialogTitle className="text-white font-semibold text-lg">Profile</DialogTitle>
+              </DialogHeader>
+
+              <div className="flex flex-col gap-4 mt-4">
                 <div className="flex items-center gap-3">
                   <Avatar className="h-12 w-12 ring-2 ring-[#00A6A6]/20">
                     <AvatarImage src="/diverse-user-avatars.png" alt="User" />
@@ -132,59 +173,17 @@ export function Header() {
                       JD
                     </AvatarFallback>
                   </Avatar>
-                  <div className="flex flex-col space-y-1">
-                    <p className="text-sm font-semibold text-white leading-none">
-                      John Doe
-                    </p>
-                    <p className="text-xs text-[#F5F7FA]/70 leading-none">
-                      john@retailpro.com
-                    </p>
-                    <span className="inline-flex items-center gap-1 text-[10px] text-[#16A34A] font-medium mt-1">
-                      <span className="h-1.5 w-1.5 rounded-full bg-[#16A34A]" />
-                      Active now
-                    </span>
+                  <div>
+                    <p className="text-white font-semibold">User</p>
+                    <p className="text-[#F5F7FA]/70 text-sm">user@retailpro.com</p>
                   </div>
                 </div>
-              </DropdownMenuLabel>
-
-              <DropdownMenuSeparator className="bg-white/10" />
-
-              {/* Menu Items */}
-              <div className="p-2 space-y-1">
-                <DropdownMenuItem className={cn(
-                  "rounded-xl px-3 py-2.5 cursor-pointer transition-all duration-200",
-                  "hover:bg-white/10 focus:bg-white/10",
-                  "text-[#F5F7FA] hover:text-white"
-                )}>
-                  <UserCircle className="mr-3 h-4 w-4" />
-                  <span className="font-medium text-sm">Profile</span>
-                </DropdownMenuItem>
-
-                <DropdownMenuItem className={cn(
-                  "rounded-xl px-3 py-2.5 cursor-pointer transition-all duration-200",
-                  "hover:bg-white/10 focus:bg-white/10",
-                  "text-[#F5F7FA] hover:text-white"
-                )}>
-                  <Settings className="mr-3 h-4 w-4" />
-                  <span className="font-medium text-sm">Settings</span>
-                </DropdownMenuItem>
+                <Button variant="destructive" className="w-full justify-start">
+                  <LogOut className="mr-2 h-4 w-4" /> Logout
+                </Button>
               </div>
-
-              <DropdownMenuSeparator className="bg-white/10" />
-
-              {/* Logout */}
-              <div className="p-2">
-                <DropdownMenuItem className={cn(
-                  "rounded-xl px-3 py-2.5 cursor-pointer transition-all duration-200",
-                  "hover:bg-[#DC2626]/10 focus:bg-[#DC2626]/10",
-                  "text-[#DC2626] hover:text-[#DC2626] font-medium"
-                )}>
-                  <LogOut className="mr-3 h-4 w-4" />
-                  <span className="text-sm">Log out</span>
-                </DropdownMenuItem>
-              </div>
-            </DropdownMenuContent>
-          </DropdownMenu>
+            </DialogContent>
+          </Dialog>
         </div>
       </div>
     </header>
