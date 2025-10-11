@@ -68,7 +68,7 @@ export default function NotificationsModal() {
             {/* Modal */}
             {isOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4  backdrop-blur-sm">
-                    <div className="relative w-full max-w-6xl max-h-[90vh] bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden -translate-y-[-400px]">
+                    <div className="relative w-full max-w-8xl min-h-[85vh] mr-4 bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden -translate-y-[-370px]">
 
                         {/* Header */}
                         <div className="bg-gradient-to-r from-[#00A6A6] to-[#008080] px-8 py-6 flex items-center justify-between">

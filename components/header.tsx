@@ -124,14 +124,6 @@ export function Header() {
                   <p className="text-white/70 text-sm">Assign roles and access levels.</p>
                 </div>
 
-                {/* Data Backup & Restore */}
-                <div className="flex flex-col bg-white/5 p-4 rounded-xl hover:bg-white/10 transition">
-                  <div className="flex items-center mb-2">
-                    <Database className="h-6 w-6 text-white mr-2" />
-                    <h3 className="text-white font-semibold">Data Backup & Restore</h3>
-                  </div>
-                  <p className="text-white/70 text-sm">Backup and restore data.</p>
-                </div>
               </div>
 
             </DialogContent>
