@@ -60,7 +60,7 @@ export function Sidebar() {
             >
               <div className="relative w-[120px] h-[70px] overflow-hidden rounded-md">
                 <Image
-                  src="/fein_logo_transparent.png"
+                  src="/Fein_Logo_Transparent.png"
                   alt="RetailPro Logo"
                   width={160}
                   height={90}
