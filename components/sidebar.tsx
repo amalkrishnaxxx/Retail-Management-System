@@ -58,13 +58,13 @@ export function Sidebar() {
                 isCollapsed ? "opacity-0 scale-95 w-0" : "opacity-100 scale-100"
               )}
             >
-              <div className="relative w-[160px] h-[65px] overflow-hidden rounded-md">
+              <div className="relative w-[120px] h-[70px] overflow-hidden rounded-md">
                 <Image
-                  src="/Fein_Logo.png"
+                  src="/fein_logo_transparent.png"
                   alt="RetailPro Logo"
                   width={160}
                   height={90}
-                  className="object-cover object-top translate-y-[-40px]"
+                  className="object-cover object-top translate-y-[-26px] "
                   priority
                 />
               </div>
@@ -82,14 +82,16 @@ export function Sidebar() {
             )}
           >
             {isCollapsed ? (
-              <Image
-                src="/Fein_Logo.png"
-                alt="Fein Logo"
-                width={40}
-                height={40}
-                className="object-contain mx-auto transition-transform duration-300 hover:scale-105"
-                priority
-              />
+              <div className="flex items-center justify-center bg-white rounded-2xl">
+                <Image
+                  src="/fein_logo_app.png"
+                  alt="Fein Logo"
+                  width={50}
+                  height={50}
+                  className="object-contain mx-auto transition-transform duration-300 hover:scale-105"
+                  priority
+                />
+              </div>
             ) : (
               <ChevronLeft className="h-5 w-5 transition-transform duration-300 hover:-translate-x-1" />
             )}

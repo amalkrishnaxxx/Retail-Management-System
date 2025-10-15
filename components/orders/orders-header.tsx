@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Search, Filter, Download, Plus } from "lucide-react"
+import { Search, Filter, Download } from "lucide-react"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,6 +11,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import NewOrderDialog from "./newOrderDialogue"
 
 export function OrdersHeader() {
   return (
@@ -64,10 +65,7 @@ export function OrdersHeader() {
           </Button>
 
           {/* Add Order */}
-          {/* <Button className="bg-teal-500 hover:bg-teal-600 text-white shadow-lg shadow-teal-500/20 hover:shadow-teal-500/30 transition-all duration-200">
-            <Plus className="h-4 w-4 mr-2" />
-            New Order
-          </Button> */}
+          <NewOrderDialog />
         </div>
       </div>
     </div>
